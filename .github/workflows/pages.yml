@@ -18,20 +18,35 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+    steps:
+      # ✅ IMPORTANT: Fetch Git LFS files (your .glb lives here)
+      - name: Checkout repository (with LFS)
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      # 🔧 Ensure LFS files are pulled
+      - name: Pull Git LFS files
+        run: git lfs pull
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - run: npm ci
-      - run: npm run build
+      - name: Install dependencies
+        run: npm ci
 
-      # DEBUG: verify assets
-      - run: ls -R dist
+      - name: Build Vite project
+        run: npm run build
 
-      - uses: actions/upload-pages-artifact@v3
+      # 🔍 DEBUG (optional but safe to keep)
+      - name: List dist contents
+        run: ls -R dist
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
@@ -40,5 +55,9 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
-      - uses: actions/deploy-pages@v4
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
