@@ -1,7 +1,5 @@
 import { motion } from "framer-motion";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import TwitterIcon from "@mui/icons-material/Twitter";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
@@ -47,7 +45,7 @@ export default function Footer() {
               <a href="tel:+919342972807">+91 93429 72807</a>
             </p>
             <p className="max-w-xs">
-              C23, 1st Floor RE Classic Apartments, 68, Baroda 3rd Street, <br />
+              Baroda Street, <br />
               West Mambalam, Chennai – 600033
             </p>
           </div>
@@ -60,7 +58,7 @@ export default function Footer() {
           </h3>
           <div className="flex gap-4">
             <motion.a
-              href="https://www.instagram.com/YOUR_INSTAGRAM_LINK"
+              href="https://www.instagram.com/_chroma_3d_/"
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.15 }}
