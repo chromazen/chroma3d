@@ -1,3 +1,4 @@
+// src/Components/Header/Header.jsx
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { IconButton, Menu, MenuItem } from "@mui/material";
@@ -15,56 +16,51 @@ export default function Header() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  const handleMenuOpen = (e) => setAnchorEl(e.currentTarget);
-  const handleMenuClose = () => setAnchorEl(null);
-
   return (
     <header className="sticky top-0 z-50">
-      {/* Thin top divider */}
+      {/* Top hairline */}
       <div className="h-px w-full bg-white/10" />
 
-      {/* Glass nav bar */}
+      {/* Glass navbar */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         className="
           relative border-b border-white/10 bg-white/5 backdrop-blur-md
-          after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0
+          after:absolute after:bottom-0 after:left-0 after:right-0
           after:h-[1px] after:bg-gradient-to-r
           after:from-black after:via-orange-500 after:to-black
         "
       >
-        <div className="h-16 flex items-center justify-between px-[10px]">
+        <div className="h-16 flex items-center justify-between px-4">
           {/* Logo + Brand */}
           <NavLink to="/" className="inline-flex items-center gap-3">
             <img
-              src={`${import.meta.env.BASE_URL}headerlogo.svg`}
+              src="/headerlogo.svg"
               alt="Chroma3D"
               className="h-9 sm:h-10 w-auto"
-              draggable="false"
+              draggable={false}
             />
 
             <span
-              className="whitespace-nowrap leading-none text-[26px] sm:text-[30px]"
-              style={{
-                fontFamily: "'StardusterLasital', system-ui, sans-serif",
-              }}
+              className="text-[26px] sm:text-[30px] leading-none"
+              style={{ fontFamily: "'StardusterLasital', system-ui, sans-serif" }}
             >
               <span className="text-white">chroma</span>
               <span className="text-orange-500">3D</span>
             </span>
           </NavLink>
 
-          {/* Desktop Nav */}
+          {/* Desktop navigation */}
           <nav className="hidden sm:flex items-center gap-8 text-sm text-white/80">
             {NAV.map((item) => (
               <NavLink
                 key={item.label}
                 to={item.to}
                 className={({ isActive }) =>
-                  `transition-colors duration-300 ${
-                    isActive ? "text-orange-500" : "hover:text-orange-500"
-                  }`
+                  isActive
+                    ? "text-orange-500"
+                    : "hover:text-orange-500 transition-colors"
                 }
               >
                 {item.label}
@@ -74,21 +70,25 @@ export default function Header() {
             <NavLink
               to="/get-quote"
               className={({ isActive }) =>
-                `rounded-xl border border-white/15 bg-white/10 px-4 py-2 transition-colors duration-300 ${
+                `
+                rounded-xl border border-white/15 bg-white/10 px-4 py-2
+                transition-colors
+                ${
                   isActive
                     ? "text-orange-500"
                     : "hover:text-orange-500 hover:bg-white/15"
-                }`
+                }
+              `
               }
             >
               Get Quote
             </NavLink>
           </nav>
 
-          {/* Mobile Nav */}
+          {/* Mobile navigation */}
           <div className="sm:hidden">
             <IconButton
-              onClick={handleMenuOpen}
+              onClick={(e) => setAnchorEl(e.currentTarget)}
               size="small"
               sx={{
                 color: "white",
@@ -103,7 +103,7 @@ export default function Header() {
             <Menu
               anchorEl={anchorEl}
               open={open}
-              onClose={handleMenuClose}
+              onClose={() => setAnchorEl(null)}
               PaperProps={{
                 sx: {
                   mt: 1,
@@ -118,24 +118,27 @@ export default function Header() {
               transformOrigin={{ horizontal: "right", vertical: "top" }}
             >
               <MenuItem
-                onClick={handleMenuClose}
-                sx={{ justifyContent: "flex-end", py: 0.5 }}
+                onClick={() => setAnchorEl(null)}
+                sx={{ justifyContent: "flex-end" }}
               >
                 <CloseRoundedIcon fontSize="small" />
               </MenuItem>
 
               {NAV.map((item) => (
-                <MenuItem key={item.label} onClick={handleMenuClose}>
+                <MenuItem
+                  key={item.label}
+                  onClick={() => setAnchorEl(null)}
+                >
                   <NavLink
                     to={item.to}
-                    className="w-full py-1.5 text-center hover:text-orange-500"
+                    className="w-full text-center py-1.5 hover:text-orange-500"
                   >
                     {item.label}
                   </NavLink>
                 </MenuItem>
               ))}
 
-              <MenuItem onClick={handleMenuClose}>
+              <MenuItem onClick={() => setAnchorEl(null)}>
                 <NavLink
                   to="/get-quote"
                   className="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-center hover:text-orange-500"
