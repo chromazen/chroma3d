@@ -23,7 +23,7 @@ export default function Header() {
       {/* Thin top divider */}
       <div className="h-px w-full bg-white/10" />
 
-      {/* Glassy nav bar with gradient underline */}
+      {/* Glass nav bar */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -34,11 +34,11 @@ export default function Header() {
           after:from-black after:via-orange-500 after:to-black
         "
       >
-        <div className="h-16 w-full flex items-center justify-between px-[10px]">
-          {/* Logo + brand */}
+        <div className="h-16 flex items-center justify-between px-[10px]">
+          {/* Logo + Brand */}
           <NavLink to="/" className="inline-flex items-center gap-3">
             <img
-              src="headerlogo.svg"
+              src={`${import.meta.env.BASE_URL}headerlogo.svg`}
               alt="Chroma3D"
               className="h-9 sm:h-10 w-auto"
               draggable="false"
@@ -48,7 +48,6 @@ export default function Header() {
               className="whitespace-nowrap leading-none text-[26px] sm:text-[30px]"
               style={{
                 fontFamily: "'StardusterLasital', system-ui, sans-serif",
-                lineHeight: "1",
               }}
             >
               <span className="text-white">chroma</span>
@@ -64,9 +63,7 @@ export default function Header() {
                 to={item.to}
                 className={({ isActive }) =>
                   `transition-colors duration-300 ${
-                    isActive
-                      ? "text-orange-500"
-                      : "hover:text-orange-500"
+                    isActive ? "text-orange-500" : "hover:text-orange-500"
                   }`
                 }
               >
@@ -77,7 +74,7 @@ export default function Header() {
             <NavLink
               to="/get-quote"
               className={({ isActive }) =>
-                `rounded-xl border border-white/15 bg-white/10 px-4 py-2 text-white/90 transition-colors duration-300 ${
+                `rounded-xl border border-white/15 bg-white/10 px-4 py-2 transition-colors duration-300 ${
                   isActive
                     ? "text-orange-500"
                     : "hover:text-orange-500 hover:bg-white/15"
@@ -91,10 +88,6 @@ export default function Header() {
           {/* Mobile Nav */}
           <div className="sm:hidden">
             <IconButton
-              aria-label="Open menu"
-              aria-controls={open ? "mobile-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
               onClick={handleMenuOpen}
               size="small"
               sx={{
@@ -108,7 +101,6 @@ export default function Header() {
             </IconButton>
 
             <Menu
-              id="mobile-menu"
               anchorEl={anchorEl}
               open={open}
               onClose={handleMenuClose}
@@ -122,8 +114,8 @@ export default function Header() {
                   color: "white",
                 },
               }}
-              transformOrigin={{ horizontal: "right", vertical: "top" }}
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+              transformOrigin={{ horizontal: "right", vertical: "top" }}
             >
               <MenuItem
                 onClick={handleMenuClose}
@@ -136,7 +128,7 @@ export default function Header() {
                 <MenuItem key={item.label} onClick={handleMenuClose}>
                   <NavLink
                     to={item.to}
-                    className="w-full py-1.5 text-center transition-colors duration-300 hover:text-orange-500"
+                    className="w-full py-1.5 text-center hover:text-orange-500"
                   >
                     {item.label}
                   </NavLink>
@@ -146,7 +138,7 @@ export default function Header() {
               <MenuItem onClick={handleMenuClose}>
                 <NavLink
                   to="/get-quote"
-                  className="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-center transition-colors duration-300 hover:text-orange-500"
+                  className="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-center hover:text-orange-500"
                 >
                   Get Quote
                 </NavLink>
