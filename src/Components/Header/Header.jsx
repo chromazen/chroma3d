@@ -6,7 +6,7 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { motion } from "framer-motion";
 
 // ✅ Import logo correctly (NO absolute paths)
-import headerLogo from "/public/headerlogo.svg";
+import headerLogo from "../../assets/headerlogo.svg";
 
 const NAV = [
   { to: "/services", label: "Services" },
