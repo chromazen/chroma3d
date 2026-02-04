@@ -66,7 +66,6 @@ export default function ModelViewer({ src = MODEL_URL, overrideBronze = true }) 
             dampingFactor={0.08}
             minPolarAngle={Math.PI / 2.8}
             maxPolarAngle={Math.PI / 2.0}
-            maxAzimuthAngle={Math.PI / 10}
             target={[0, 0.1, 0]}
           />
         </Canvas>
