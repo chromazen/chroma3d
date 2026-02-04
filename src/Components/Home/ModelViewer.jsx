@@ -10,11 +10,8 @@ import {
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import { Color, MeshStandardMaterial } from "three";
 
-// 🔒 SAFE GLB URL (GitHub Pages proof)
-const MODEL_URL = new URL(
-  "ganesha.glb",
-  import.meta.env.BASE_URL
-).toString();
+// ✅ HARD-CODED, GITHUB-PAGES-SAFE PATH
+const MODEL_URL = "/chroma3d/ganesha.glb";
 
 export default function ModelViewer({
   src = MODEL_URL,
@@ -27,7 +24,7 @@ export default function ModelViewer({
     controls.current.setAzimuthalAngle(0);
     controls.current.setPolarAngle(Math.PI / 2.45);
     controls.current.update();
-  }, [src]);
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-start">
@@ -42,7 +39,7 @@ export default function ModelViewer({
         "
       >
         <Canvas
-          camera={{ fov: 30, position: [0, 0.6, 3.1], near: 0.1, far: 100 }}
+          camera={{ fov: 30, position: [0, 0.6, 3.1] }}
           dpr={[1, 2]}
           gl={{ antialias: true, alpha: true }}
           style={{ background: "transparent" }}
@@ -80,8 +77,8 @@ export default function ModelViewer({
         </Canvas>
       </div>
 
-      <div className="mt-2 flex items-center gap-2 text-[10px] sm:text-xs text-white/60 select-none">
-        <span>Hold & drag to move</span>
+      <div className="mt-2 text-xs text-white/60 select-none">
+        Hold & drag to move
       </div>
     </div>
   );
@@ -112,5 +109,5 @@ function Sculpture({ url, overrideBronze }) {
   return <primitive object={clone} position={[0, -0.12, 0]} scale={1.3} />;
 }
 
-// ✅ PRELOAD SAFELY
+// ✅ SAFE PRELOAD
 useGLTF.preload(MODEL_URL);
