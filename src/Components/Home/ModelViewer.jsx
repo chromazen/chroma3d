@@ -1,23 +1,18 @@
 // src/Components/Home/ModelViewer.jsx
 import { Canvas } from "@react-three/fiber";
-import {
-  OrbitControls,
-  useGLTF,
-  Environment,
-  Center,
-  Bounds,
-} from "@react-three/drei";
+import { OrbitControls, useGLTF, Environment, Center, Bounds } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import { Color, MeshStandardMaterial } from "three";
 
-/**
- * FINAL, GITHUB-PAGES-SAFE MODEL URL
- * This MUST resolve to:
- * https://chromazen.github.io/chroma3d/ganesha.glb
- */
-const MODEL_URL = `${import.meta.env.BASE_URL}ganesha.glb`;
+// ✅ Vite base-safe (works for /chroma3d/ on GitHub Pages)
+const withBase = (file) => {
+  const base = import.meta.env.BASE_URL || "/";
+  return `${base}${file.replace(/^\//, "")}`;
+};
 
-export default function ModelViewer({ overrideBronze = true }) {
+const MODEL_URL = withBase("ganesha.glb");
+
+export default function ModelViewer({ src = MODEL_URL, overrideBronze = true }) {
   const controls = useRef(null);
 
   useEffect(() => {
@@ -40,13 +35,12 @@ export default function ModelViewer({ overrideBronze = true }) {
         "
       >
         <Canvas
-          camera={{ fov: 30, position: [0, 0.6, 3.1] }}
+          camera={{ fov: 30, position: [0, 0.6, 3.1], near: 0.1, far: 100 }}
           dpr={[1, 2]}
           gl={{ antialias: true, alpha: true }}
           style={{ background: "transparent" }}
           shadows
         >
-          {/* Lighting */}
           <ambientLight intensity={0.7} />
           <hemisphereLight intensity={0.45} groundColor="#1a1a1a" />
           <directionalLight position={[2.5, 3.5, 3]} intensity={1.1} />
@@ -58,7 +52,7 @@ export default function ModelViewer({ overrideBronze = true }) {
           <Suspense fallback={null}>
             <Center>
               <Bounds fit clip observe margin={1.05}>
-                <Sculpture url={MODEL_URL} overrideBronze={overrideBronze} />
+                <Sculpture url={src} overrideBronze={overrideBronze} />
               </Bounds>
             </Center>
           </Suspense>
@@ -79,9 +73,7 @@ export default function ModelViewer({ overrideBronze = true }) {
         </Canvas>
       </div>
 
-      <div className="mt-2 text-xs text-white/60 select-none">
-        Hold & drag to move
-      </div>
+      <div className="mt-2 text-xs text-white/60 select-none">Hold &amp; drag to move</div>
     </div>
   );
 }
@@ -111,5 +103,5 @@ function Sculpture({ url, overrideBronze }) {
   return <primitive object={clone} position={[0, -0.12, 0]} scale={1.3} />;
 }
 
-/* Preload safely */
+// ✅ Preload with same final URL
 useGLTF.preload(MODEL_URL);
