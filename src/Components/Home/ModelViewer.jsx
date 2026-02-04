@@ -10,8 +10,14 @@ import {
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import { Color, MeshStandardMaterial } from "three";
 
+// 🔒 SAFE GLB URL (GitHub Pages proof)
+const MODEL_URL = new URL(
+  "ganesha.glb",
+  import.meta.env.BASE_URL
+).toString();
+
 export default function ModelViewer({
-  src = `${import.meta.env.BASE_URL}ganesha.glb`,
+  src = MODEL_URL,
   overrideBronze = true,
 }) {
   const controls = useRef(null);
@@ -106,5 +112,5 @@ function Sculpture({ url, overrideBronze }) {
   return <primitive object={clone} position={[0, -0.12, 0]} scale={1.3} />;
 }
 
-// ✅ PRELOAD WITH BASE_URL
-useGLTF.preload(`${import.meta.env.BASE_URL}ganesha.glb`);
+// ✅ PRELOAD SAFELY
+useGLTF.preload(MODEL_URL);
