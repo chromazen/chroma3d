@@ -5,6 +5,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { motion } from "framer-motion";
 
+// ✅ Import logo correctly (NO absolute paths)
+import headerLogo from "/public/headerlogo.svg";
+
 const NAV = [
   { to: "/services", label: "Services" },
   { to: "/products", label: "Products" },
@@ -38,11 +41,12 @@ export default function Header() {
           {/* Logo + brand */}
           <NavLink to="/" className="inline-flex items-center gap-3">
             <img
-              src="/headerlogo.svg"
+              src={headerLogo}
               alt="Chroma3D"
               className="h-9 sm:h-10 w-auto"
               draggable="false"
             />
+
             <span
               className="whitespace-nowrap leading-none text-[26px] sm:text-[30px]"
               style={{
@@ -63,7 +67,9 @@ export default function Header() {
                 to={item.to}
                 className={({ isActive }) =>
                   `transition-colors duration-300 ${
-                    isActive ? "text-orange-500" : "hover:text-orange-500"
+                    isActive
+                      ? "text-orange-500"
+                      : "hover:text-orange-500"
                   }`
                 }
               >
@@ -85,7 +91,7 @@ export default function Header() {
             </NavLink>
           </nav>
 
-          {/* Mobile Nav (hamburger) */}
+          {/* Mobile Nav */}
           <div className="sm:hidden">
             <IconButton
               aria-label="Open menu"
