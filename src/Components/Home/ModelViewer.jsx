@@ -1,15 +1,24 @@
 // src/Components/Home/ModelViewer.jsx
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, useGLTF, Environment, Center, Bounds } from "@react-three/drei";
+import {
+  OrbitControls,
+  useGLTF,
+  Environment,
+  Center,
+  Bounds,
+} from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import { Color, MeshStandardMaterial } from "three";
 
 /**
  * ModelViewer
- * - Defaults to /ganesha.glb (in /public)
- * - Bronze material with soft emissive glow (no harsh orange light)
+ * - Uses ganesha.glb from /public
+ * - GitHub Pages safe (NO absolute paths)
  */
-export default function ModelViewer({ src = "/ganesha.glb", overrideBronze = true }) {
+export default function ModelViewer({
+  src = "ganesha.glb", // ✅ FIXED (no leading slash)
+  overrideBronze = true,
+}) {
   const controls = useRef(null);
 
   useEffect(() => {
@@ -39,14 +48,13 @@ export default function ModelViewer({ src = "/ganesha.glb", overrideBronze = tru
           style={{ background: "transparent" }}
           shadows
         >
-          {/* Balanced warm lights for bronze look */}
+          {/* Lighting */}
           <ambientLight intensity={0.7} />
           <hemisphereLight intensity={0.45} groundColor="#1a1a1a" />
           <directionalLight position={[2.5, 3.5, 3]} intensity={1.1} color="#fff4e5" castShadow />
           <directionalLight position={[-3, 1.2, -2]} intensity={0.55} color="#ff8c42" />
           <directionalLight position={[3, 0.6, -1.5]} intensity={0.3} color="#ffb347" />
 
-          {/* Environment reflection */}
           <Environment preset="studio" intensity={0.65} />
 
           <Suspense fallback={null}>
@@ -75,11 +83,11 @@ export default function ModelViewer({ src = "/ganesha.glb", overrideBronze = tru
       </div>
 
       <div className="mt-2 flex items-center gap-2 text-[10px] sm:text-xs text-white/60 select-none">
-        <svg aria-hidden viewBox="0 0 24 24" className="h-3 w-3 sm:h-3.5 sm:w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <svg viewBox="0 0 24 24" className="h-3 w-3 sm:h-3.5 sm:w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5">
           <path d="M15 6l-6 6 6 6" />
         </svg>
         <span>Hold &amp; drag to move</span>
-        <svg aria-hidden viewBox="0 0 24 24" className="h-3 w-3 sm:h-3.5 sm:w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <svg viewBox="0 0 24 24" className="h-3 w-3 sm:h-3.5 sm:w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5">
           <path d="M9 6l6 6-6 6" />
         </svg>
       </div>
@@ -97,7 +105,7 @@ function Sculpture({ url, overrideBronze }) {
       metalness: 1.0,
       roughness: 0.3,
       emissive: new Color("#ff6a00"),
-      emissiveIntensity: 0.15, // reduced for softer glow
+      emissiveIntensity: 0.15,
     });
 
     clone.traverse((o) => {
@@ -112,5 +120,5 @@ function Sculpture({ url, overrideBronze }) {
   return <primitive object={clone} position={[0, -0.12, 0]} scale={1.3} />;
 }
 
-// Preload Ganesha model
-useGLTF.preload("/ganesha.glb");
+// ✅ FIXED preload (NO leading slash)
+useGLTF.preload("ganesha.glb");
