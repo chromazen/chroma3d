@@ -78,7 +78,7 @@ export default function Working() {
         <img
           src={`${import.meta.env.BASE_URL}working_bg.svg`}
           alt="Working process background"
-          className="absolute right-0 top-0 w-[110%] h-full object-cover object-right"
+          className="absolute right-0 top-0 w-full h-full object-cover"
         />
 
         <div className="relative z-10 w-[75%] md:w-[65%] space-y-6">
