@@ -1,8 +1,8 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
-// https://vite.dev/config/
 export default defineConfig({
+  base: "/chroma3d/",
   plugins: [react()],
-  base: '/chroma3d/',
-})
+  publicDir: "public", // 👈 FORCE copy public
+});
