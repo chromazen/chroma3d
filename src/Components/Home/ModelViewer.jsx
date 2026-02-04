@@ -10,13 +10,14 @@ import {
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import { Color, MeshStandardMaterial } from "three";
 
-// ✅ HARD-CODED, GITHUB-PAGES-SAFE PATH
-const MODEL_URL = "/chroma3d/ganesha.glb";
+/**
+ * FINAL, GITHUB-PAGES-SAFE MODEL URL
+ * This MUST resolve to:
+ * https://chromazen.github.io/chroma3d/ganesha.glb
+ */
+const MODEL_URL = `${import.meta.env.BASE_URL}ganesha.glb`;
 
-export default function ModelViewer({
-  src = MODEL_URL,
-  overrideBronze = true,
-}) {
+export default function ModelViewer({ overrideBronze = true }) {
   const controls = useRef(null);
 
   useEffect(() => {
@@ -45,6 +46,7 @@ export default function ModelViewer({
           style={{ background: "transparent" }}
           shadows
         >
+          {/* Lighting */}
           <ambientLight intensity={0.7} />
           <hemisphereLight intensity={0.45} groundColor="#1a1a1a" />
           <directionalLight position={[2.5, 3.5, 3]} intensity={1.1} />
@@ -56,7 +58,7 @@ export default function ModelViewer({
           <Suspense fallback={null}>
             <Center>
               <Bounds fit clip observe margin={1.05}>
-                <Sculpture url={src} overrideBronze={overrideBronze} />
+                <Sculpture url={MODEL_URL} overrideBronze={overrideBronze} />
               </Bounds>
             </Center>
           </Suspense>
@@ -109,5 +111,5 @@ function Sculpture({ url, overrideBronze }) {
   return <primitive object={clone} position={[0, -0.12, 0]} scale={1.3} />;
 }
 
-// ✅ SAFE PRELOAD
+/* Preload safely */
 useGLTF.preload(MODEL_URL);
