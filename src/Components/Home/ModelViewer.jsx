@@ -1,24 +1,25 @@
 // src/Components/Home/ModelViewer.jsx
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, useGLTF, Environment, Center, Bounds } from "@react-three/drei";
+import {
+  OrbitControls,
+  useGLTF,
+  Environment,
+  Center,
+  Bounds,
+} from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import { Color, MeshStandardMaterial } from "three";
 
-// ✅ Vite base-safe (works for /chroma3d/ on GitHub Pages)
-const withBase = (file) => {
-  const base = import.meta.env.BASE_URL || "/";
-  return `${base}${file.replace(/^\//, "")}`;
-};
+// ✅ ROOT-ABSOLUTE path (custom-domain safe)
+const MODEL_URL = "/ganesha.glb";
 
-const MODEL_URL = withBase("ganesha.glb");
-
-export default function ModelViewer({ src = MODEL_URL, overrideBronze = true }) {
+export default function ModelViewer({ overrideBronze = true }) {
   const controls = useRef(null);
 
   useEffect(() => {
     if (!controls.current) return;
     controls.current.setAzimuthalAngle(0);
-    controls.current.setPolarAngle(Math.PI / 2.45);
+    controls.current.setPolarAngle(Math.PI / 2.3);
     controls.current.update();
   }, []);
 
@@ -41,6 +42,7 @@ export default function ModelViewer({ src = MODEL_URL, overrideBronze = true }) 
           style={{ background: "transparent" }}
           shadows
         >
+          {/* Lights */}
           <ambientLight intensity={0.7} />
           <hemisphereLight intensity={0.45} groundColor="#1a1a1a" />
           <directionalLight position={[2.5, 3.5, 3]} intensity={1.1} />
@@ -52,11 +54,15 @@ export default function ModelViewer({ src = MODEL_URL, overrideBronze = true }) 
           <Suspense fallback={null}>
             <Center>
               <Bounds fit clip observe margin={1.05}>
-                <Sculpture url={src} overrideBronze={overrideBronze} />
+                <Sculpture
+                  url={MODEL_URL}
+                  overrideBronze={overrideBronze}
+                />
               </Bounds>
             </Center>
           </Suspense>
 
+          {/* ✅ Full left–right rotation, only vertical clamp */}
           <OrbitControls
             ref={controls}
             makeDefault
@@ -65,13 +71,15 @@ export default function ModelViewer({ src = MODEL_URL, overrideBronze = true }) 
             enableDamping
             dampingFactor={0.08}
             minPolarAngle={Math.PI / 2.8}
-            maxPolarAngle={Math.PI / 2.0}
+            maxPolarAngle={Math.PI / 1.9}
             target={[0, 0.1, 0]}
           />
         </Canvas>
       </div>
 
-      <div className="mt-2 text-xs text-white/60 select-none">Hold &amp; drag to move</div>
+      <div className="mt-2 text-xs text-white/60 select-none">
+        Hold & drag to move
+      </div>
     </div>
   );
 }
@@ -89,17 +97,23 @@ function Sculpture({ url, overrideBronze }) {
       emissiveIntensity: 0.15,
     });
 
-    clone.traverse((o) => {
-      if (o.isMesh) {
-        o.castShadow = true;
-        o.receiveShadow = true;
-        if (overrideBronze) o.material = bronze;
+    clone.traverse((obj) => {
+      if (obj.isMesh) {
+        obj.castShadow = true;
+        obj.receiveShadow = true;
+        if (overrideBronze) obj.material = bronze;
       }
     });
   }, [clone, overrideBronze]);
 
-  return <primitive object={clone} position={[0, -0.12, 0]} scale={1.3} />;
+  return (
+    <primitive
+      object={clone}
+      position={[0, -0.12, 0]}
+      scale={1.3}
+    />
+  );
 }
 
-// ✅ Preload with same final URL
-useGLTF.preload(MODEL_URL);
+// ✅ Preload once, correctly
+useGLTF.preload("/ganesha.glb");
