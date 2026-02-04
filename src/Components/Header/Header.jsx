@@ -38,7 +38,7 @@ export default function Header() {
           {/* Logo + brand */}
           <NavLink to="/" className="inline-flex items-center gap-3">
             <img
-              src={headerLogo}
+              src="headerlogo.svg"
               alt="Chroma3D"
               className="h-9 sm:h-10 w-auto"
               draggable="false"
