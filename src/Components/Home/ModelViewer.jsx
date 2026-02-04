@@ -10,13 +10,8 @@ import {
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import { Color, MeshStandardMaterial } from "three";
 
-/**
- * ModelViewer
- * - Uses ganesha.glb from /public
- * - GitHub Pages safe (NO absolute paths)
- */
 export default function ModelViewer({
-  src = "ganesha.glb", // ✅ FIXED (no leading slash)
+  src = `${import.meta.env.BASE_URL}ganesha.glb`,
   overrideBronze = true,
 }) {
   const controls = useRef(null);
@@ -41,25 +36,23 @@ export default function ModelViewer({
         "
       >
         <Canvas
-          className="relative z-[120]"
           camera={{ fov: 30, position: [0, 0.6, 3.1], near: 0.1, far: 100 }}
           dpr={[1, 2]}
           gl={{ antialias: true, alpha: true }}
           style={{ background: "transparent" }}
           shadows
         >
-          {/* Lighting */}
           <ambientLight intensity={0.7} />
           <hemisphereLight intensity={0.45} groundColor="#1a1a1a" />
-          <directionalLight position={[2.5, 3.5, 3]} intensity={1.1} color="#fff4e5" castShadow />
-          <directionalLight position={[-3, 1.2, -2]} intensity={0.55} color="#ff8c42" />
-          <directionalLight position={[3, 0.6, -1.5]} intensity={0.3} color="#ffb347" />
+          <directionalLight position={[2.5, 3.5, 3]} intensity={1.1} />
+          <directionalLight position={[-3, 1.2, -2]} intensity={0.55} />
+          <directionalLight position={[3, 0.6, -1.5]} intensity={0.3} />
 
           <Environment preset="studio" intensity={0.65} />
 
           <Suspense fallback={null}>
             <Center>
-              <Bounds fit clip observe margin={1.05} key={src}>
+              <Bounds fit clip observe margin={1.05}>
                 <Sculpture url={src} overrideBronze={overrideBronze} />
               </Bounds>
             </Center>
@@ -70,7 +63,6 @@ export default function ModelViewer({
             makeDefault
             enablePan={false}
             enableZoom={false}
-            autoRotate={false}
             enableDamping
             dampingFactor={0.08}
             minPolarAngle={Math.PI / 2.8}
@@ -83,13 +75,7 @@ export default function ModelViewer({
       </div>
 
       <div className="mt-2 flex items-center gap-2 text-[10px] sm:text-xs text-white/60 select-none">
-        <svg viewBox="0 0 24 24" className="h-3 w-3 sm:h-3.5 sm:w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M15 6l-6 6 6 6" />
-        </svg>
-        <span>Hold &amp; drag to move</span>
-        <svg viewBox="0 0 24 24" className="h-3 w-3 sm:h-3.5 sm:w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M9 6l6 6-6 6" />
-        </svg>
+        <span>Hold & drag to move</span>
       </div>
     </div>
   );
@@ -102,7 +88,7 @@ function Sculpture({ url, overrideBronze }) {
   useEffect(() => {
     const bronze = new MeshStandardMaterial({
       color: new Color("#c67c36"),
-      metalness: 1.0,
+      metalness: 1,
       roughness: 0.3,
       emissive: new Color("#ff6a00"),
       emissiveIntensity: 0.15,
@@ -120,5 +106,5 @@ function Sculpture({ url, overrideBronze }) {
   return <primitive object={clone} position={[0, -0.12, 0]} scale={1.3} />;
 }
 
-// ✅ FIXED preload (NO leading slash)
-useGLTF.preload("ganesha.glb");
+// ✅ PRELOAD WITH BASE_URL
+useGLTF.preload(`${import.meta.env.BASE_URL}ganesha.glb`);
