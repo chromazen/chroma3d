@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -26,6 +27,9 @@ jobs:
 
       - run: npm ci
       - run: npm run build
+
+      # DEBUG: verify assets
+      - run: ls -R dist
 
       - uses: actions/upload-pages-artifact@v3
         with:
