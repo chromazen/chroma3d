@@ -56,6 +56,19 @@ export default function ModelViewer({ src = MODEL_URL, overrideBronze = true }) 
               </Bounds>
             </Center>
           </Suspense>
+
+          <OrbitControls
+            ref={controls}
+            makeDefault
+            enablePan={false}
+            enableZoom={false}
+            enableDamping
+            dampingFactor={0.08}
+            minPolarAngle={Math.PI / 2.8}
+            maxPolarAngle={Math.PI / 2.0}
+            maxAzimuthAngle={Math.PI / 10}
+            target={[0, 0.1, 0]}
+          />
         </Canvas>
       </div>
 
