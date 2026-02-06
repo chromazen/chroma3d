@@ -1,5 +1,4 @@
-import { Helmet } from "react-helmet-async";
-
+// src/Components/Home/Home.jsx
 import Hero from "./Hero.jsx";
 import WhyUs from "./WhyUs.jsx";
 import Vision from "./Vision.jsx";
@@ -8,42 +7,26 @@ import Statement from "./Statement.jsx";
 
 export default function Home() {
   return (
-    <>
-      {/* SEO for Home Page */}
-      <Helmet>
-        <title>Chroma3D | Professional 3D Printing Services</title>
-        <meta
-          name="description"
-          content="Custom 3D printing, rapid prototyping, and precision manufacturing by Chroma3D. Built for designers, engineers, and creators."
-        />
-      </Helmet>
+    <main className="min-h-screen bg-black">
+      <section id="home" className="scroll-mt-20">
+        <Hero />
+      </section>
 
-      <main className="min-h-screen bg-black">
-        {/* Hero */}
-        <section id="home" className="scroll-mt-20">
-          <Hero />
-        </section>
+      <section id="vision" className="scroll-mt-20 -mt-[2px]">
+        <Vision />
+      </section>
 
-        {/* Vision */}
-        <section id="vision" className="scroll-mt-20 -mt-[2px]">
-          <Vision />
-        </section>
+      <section id="why-us" className="scroll-mt-20 -mt-[2px]">
+        <WhyUs />
+      </section>
 
-        {/* Why Us */}
-        <section id="why-us" className="scroll-mt-20 -mt-[2px]">
-          <WhyUs />
-        </section>
+      <section id="working" className="scroll-mt-20 -mt-[2px]">
+        <Working />
+      </section>
 
-        {/* Working */}
-        <section id="working" className="scroll-mt-20 -mt-[2px]">
-          <Working />
-        </section>
-
-        {/* Statement */}
-        <section id="statement" className="scroll-mt-20">
-          <Statement />
-        </section>
-      </main>
-    </>
+      <section id="statement" className="scroll-mt-20">
+        <Statement />
+      </section>
+    </main>
   );
 }
