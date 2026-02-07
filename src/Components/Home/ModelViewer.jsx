@@ -11,7 +11,7 @@ import { Suspense, useEffect, useMemo, useRef } from "react";
 import { Color, MeshStandardMaterial } from "three";
 
 // ✅ ROOT-ABSOLUTE path (custom-domain safe)
-const MODEL_URL = "/ganesha.glb";
+const MODEL_URL = "/lakshmi.glb";
 
 export default function ModelViewer({ overrideBronze = true }) {
   const controls = useRef(null);
@@ -116,4 +116,4 @@ function Sculpture({ url, overrideBronze }) {
 }
 
 // ✅ Preload once, correctly
-useGLTF.preload("/ganesha.glb");
+useGLTF.preload("/lakshmi.glb");
