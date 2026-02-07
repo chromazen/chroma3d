@@ -1,166 +1,112 @@
 // src/Components/Home/Hero.jsx
-import { motion } from "framer-motion";
-import ModelViewer from "./ModelViewer.jsx";
+import { motion, useMotionValue, useTransform } from "framer-motion";
+import { useEffect } from "react";
 
-const leftVariants = {
-  hidden: { opacity: 0, x: -40 },
-  show: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } },
-};
-
-const rightVariants = {
-  hidden: { opacity: 0, x: 40 },
-  show: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.8, ease: "easeOut", delay: 0.2 },
-  },
-};
+const leftVariants = { hidden: { opacity: 0, x: -40 }, show: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }, }; const rightVariants = { hidden: { opacity: 0, x: 40 }, show: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut", delay: 0.2 }, }, };
 
 export default function Hero() {
+
+  /* Mouse Parallax */
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const rotateX = useTransform(mouseY, [-50, 50], [6, -6]);
+  const rotateY = useTransform(mouseX, [-50, 50], [-6, 6]);
+
+  useEffect(() => {
+    const handleMove = (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 100;
+      const y = (e.clientY / window.innerHeight - 0.5) * 100;
+      mouseX.set(x);
+      mouseY.set(y);
+    };
+
+    window.addEventListener("mousemove", handleMove);
+    return () => window.removeEventListener("mousemove", handleMove);
+  }, []);
+
   return (
-    <section
-      className="
-        relative w-full min-h-[calc(100vh-4rem)]
-        flex flex-col lg:flex-row
-        items-center justify-center
-        px-6 sm:px-10 lg:px-20
-        overflow-hidden
-        gap-4 sm:gap-6 lg:gap-0
-        text-white
-        bg-black
-      "
-      style={{ transform: "translateZ(0)" }}
-    >
-      {/* === PURE BLACK BACKGROUND WITH SUBTLE ORANGE HOLLOWS === */}
-      <div className="absolute inset-0 bg-black -z-20" />
-      <div className="pointer-events-none absolute -left-40 top-32 h-96 w-96 rounded-full bg-orange-500/10 blur-3xl -z-10" />
-      <div className="pointer-events-none absolute right-40 top-1/3 h-[380px] w-[380px] rounded-full bg-orange-500/10 blur-3xl -z-10" />
-      <div className="pointer-events-none absolute bottom-16 left-1/2 -translate-x-1/2 h-64 w-64 rounded-full bg-orange-500/10 blur-3xl opacity-60 -z-10" />
+    <section className="relative w-full min-h-[calc(100vh-4rem)] flex flex-col lg:flex-row items-center justify-center px-6 sm:px-10 lg:px-20 overflow-hidden gap-4 sm:gap-6 lg:gap-0 text-white bg-black">
 
-      {/* Subtle grain pattern overlay for texture */}
-      <div className="pointer-events-none absolute inset-0 opacity-[0.04] [background:repeating-linear-gradient(90deg,transparent_0_20px,rgba(255,255,255,0.05)_21px,transparent_22px)] -z-10" />
+      {/* === PURE BLACK BACKGROUND WITH SUBTLE ORANGE HOLLOWS === */} <div className="absolute inset-0 bg-black -z-20" /> <div className="pointer-events-none absolute -left-40 top-32 h-96 w-96 rounded-full bg-orange-500/10 blur-3xl -z-10" /> <div className="pointer-events-none absolute right-40 top-1/3 h-[380px] w-[380px] rounded-full bg-orange-500/10 blur-3xl -z-10" /> <div className="pointer-events-none absolute bottom-16 left-1/2 -translate-x-1/2 h-64 w-64 rounded-full bg-orange-500/10 blur-3xl opacity-60 -z-10" /> {/* Subtle grain pattern overlay for texture */} <div className="pointer-events-none absolute inset-0 opacity-[0.04] [background:repeating-linear-gradient(90deg,transparent_0_20px,rgba(255,255,255,0.05)_21px,transparent_22px)] -z-10" />
 
-      {/* === LEFT CONTENT === */}
+      {/* === Ambient Premium Glow Blobs === */}
+
+      {/* Left Glow */}
       <motion.div
-        variants={leftVariants}
-        initial="hidden"
-        animate="show"
-        className="
-          flex-1 flex flex-col justify-center
-          items-start text-left
-          lg:mb-0
-          h-full
-          relative z-10
-        "
-        style={{ fontFamily: "Poppins, system-ui, sans-serif" }}
-      >
-        <div className="flex flex-col justify-center h-full lg:h-auto">
-          {/* Hidden on small screens */}
-          <p className="hidden lg:block uppercase tracking-[8px] text-xs sm:text-sm text-orange-500/80 mb-1 sm:mb-2">
-            <span className="text-gray-100">Chroma</span>3D
-          </p>
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{
+          opacity: 1,
+          scale: [1, 1.08, 1],
+        }}
+        transition={{
+          duration: 12,
+          ease: "easeInOut",
+          repeat: Infinity,
+        }}
+        className="pointer-events-none absolute -left-40 top-32 h-96 w-96 rounded-full bg-orange-500/10 blur-3xl -z-10"
+      />
 
-          {/* Added top margin for smaller screens */}
-          <h1
-            className="mt-6 lg:mt-0 text-3xl sm:text-5xl leading-snug sm:leading-tight"
-            style={{ fontFamily: "'StardusterLasital', system-ui, sans-serif" }}
-          >
-            where&nbsp;<span className="text-orange-500">ideas</span>
-            <br />
-            take&nbsp;<span className="text-white">shape.</span>
-          </h1>
+      {/* Right Glow */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{
+          opacity: 1,
+          scale: [1.05, 1, 1.05],
+        }}
+        transition={{
+          duration: 15,
+          ease: "easeInOut",
+          repeat: Infinity,
+        }}
+        className="pointer-events-none absolute right-40 top-1/3 h-[380px] w-[380px] rounded-full bg-orange-500/10 blur-3xl -z-10"
+      />
 
-          <p className="mt-3 sm:mt-4 text-white/80 max-w-md text-xs sm:text-sm">
-            Turning imagination into precision-crafted reality. From rapid
-            prototypes to showpiece products, we bring your concepts to life —
-            layer by layer — with the perfect blend of art and engineering.
-          </p>
+      {/* Bottom Glow */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0.3, 0.5, 0.3] }}
+        transition={{
+          duration: 14,
+          ease: "easeInOut",
+          repeat: Infinity,
+        }}
+        className="pointer-events-none absolute bottom-16 left-1/2 -translate-x-1/2 h-64 w-64 rounded-full bg-orange-500/10 blur-3xl opacity-60 -z-10"
+      />
 
-          <div className="mt-5 sm:mt-6 flex gap-2 sm:gap-3">
-            <a
-              href="#services"
-              className="rounded-xl border border-orange-500/25 px-3 sm:px-4 py-1.5 sm:py-2 text-orange-500 hover:text-white hover:border-white transition text-xs sm:text-sm"
-            >
-              Explore Services
-            </a>
-            <a
-              href="#products"
-              className="rounded-xl border border-white/10 bg-transparent px-3 sm:px-4 py-1.5 sm:py-2 text-white/80 hover:text-orange-500 transition-colors text-xs sm:text-sm"
-            >
-              View Products →
-            </a>
-          </div>
-        </div>
-      </motion.div>
+      {/* === LEFT CONTENT === */} <motion.div variants={leftVariants} initial="hidden" animate="show" className=" flex-1 flex flex-col justify-center items-start text-left lg:mb-0 h-full relative z-10 " style={{ fontFamily: "Poppins, system-ui, sans-serif" }} > <div className="flex flex-col justify-center h-full lg:h-auto"> {/* Hidden on small screens */} <p className="hidden lg:block uppercase tracking-[8px] text-xs sm:text-sm text-orange-500/80 mb-1 sm:mb-2"> <span className="text-gray-100">Chroma</span>3D </p> {/* Added top margin for smaller screens */} <h1 className="mt-6 lg:mt-0 text-3xl sm:text-5xl leading-snug sm:leading-tight" style={{ fontFamily: "'StardusterLasital', system-ui, sans-serif" }} > where&nbsp;<span className="text-orange-500">ideas</span> <br /> take&nbsp;<span className="text-white">shape.</span> </h1> <p className="mt-3 sm:mt-4 text-white/80 max-w-md text-xs sm:text-sm"> Turning imagination into precision-crafted reality. From rapid prototypes to showpiece products, we bring your concepts to life — layer by layer — with the perfect blend of art and engineering. </p> <div className="mt-5 sm:mt-6 flex gap-2 sm:gap-3"> <a href="#services" className="rounded-xl border border-orange-500/25 px-3 sm:px-4 py-1.5 sm:py-2 text-orange-500 hover:text-white hover:border-white transition text-xs sm:text-sm" > Explore Services </a> <a href="#products" className="rounded-xl border border-white/10 bg-transparent px-3 sm:px-4 py-1.5 sm:py-2 text-white/80 hover:text-orange-500 transition-colors text-xs sm:text-sm" > View Products → </a> </div> </div> </motion.div>
 
-      {/* === CENTER MODEL VIEWER === */}
+      {/* ===== CENTER IDOL ===== */}
       <div className="flex flex-1 items-center justify-center relative z-[20] min-h-[60vh] lg:min-h-full">
-        {/* Ambient halo */}
-        <div
-          aria-hidden
+
+        {/* Halo Entrance */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.7 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.3 }}
           className="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center"
         >
-          <div
-            className="
-              h-80 w-80 rounded-full
-              bg-[radial-gradient(circle,rgba(200,200,210,0.08)_0%,rgba(0,0,0,0)_70%)]
-              blur-2xl
-            "
-          />
-        </div>
+          <div className="h-96 w-96 rounded-full bg-[radial-gradient(circle,rgba(255,165,0,0.12)_0%,transparent_70%)] blur-3xl" />
+        </motion.div>
 
-        {/* Orange base glow under model */}
-        <div
-          aria-hidden
-          className="
-            pointer-events-none absolute left-1/2 bottom-[-6px] -z-10
-            h-12 w-56 -translate-x-1/2
-            rounded-full bg-orange-500/18 blur-2xl
-          "
+        {/* Pedestal Glow */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.7 }}
+          animate={{ opacity: 0.6, scale: 1 }}
+          transition={{ duration: 1.2 }}
+          className="pointer-events-none absolute left-1/2 bottom-[-6px] -z-10 h-16 w-72 -translate-x-1/2 rounded-full bg-orange-500/20 blur-2xl"
         />
 
-        {/* Actual 3D model */}
-        <div className="relative z-[30] flex items-center justify-center">
-          <ModelViewer />
-        </div>
+        {/* Lakshmi Idol */}
+        <motion.img
+          src="/lakshmi.png"
+          alt="Lakshmi Idol"
+          style={{ rotateX, rotateY }}
+          initial={{ opacity: 0, scale: 0.85, y: 60 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          className="relative z-[30] max-h-[480px] sm:max-h-[520px] lg:max-h-[620px] object-contain drop-shadow-[0_35px_80px_rgba(0,0,0,0.9)]"
+        />
       </div>
 
-      {/* === RIGHT CONTENT === */}
-      <motion.div
-        variants={rightVariants}
-        initial="hidden"
-        animate="show"
-        className="
-          flex-1 flex flex-col justify-center
-          items-start lg:items-end text-left lg:text-right
-          h-full
-          relative z-10
-        "
-        style={{ fontFamily: "Poppins, system-ui, sans-serif" }}
-      >
-        <div className="flex flex-col justify-center h-full lg:h-auto">
-          <h2 className="text-lg sm:text-xl text-white/90">
-            Built for{" "}
-            <span className="text-orange-500 font-semibold">
-              dreamers, designers, and doers.
-            </span>
-          </h2>
-
-          <p className="mt-2 sm:mt-3 text-white/70 max-w-md text-xs sm:text-sm leading-relaxed">
-            From a single concept to full-scale production, Chroma3D delivers
-            precision, consistency, and speed — because every layer matters.
-          </p>
-
-          <div className="mt-4 sm:mt-5">
-            <a
-              href="#contact"
-              className="inline-block rounded-xl border border-white/15 px-3 sm:px-4 py-1.5 sm:py-2 text-white/90 hover:text-orange-500 hover:bg-white/15 transition text-xs sm:text-sm"
-            >
-              Get a Quote
-            </a>
-          </div>
-        </div>
-      </motion.div>
-    </section>
-  );
-}
+  {/* === RIGHT CONTENT === */} <motion.div variants={rightVariants} initial="hidden" animate="show" className=" flex-1 flex flex-col justify-center items-start lg:items-end text-left lg:text-right h-full relative z-10 " style={{ fontFamily: "Poppins, system-ui, sans-serif" }} > <div className="flex flex-col justify-center h-full lg:h-auto"> <h2 className="text-lg sm:text-xl text-white/90"> Built for{" "} <span className="text-orange-500 font-semibold"> dreamers, designers, and doers. </span> </h2> <p className="mt-2 sm:mt-3 text-white/70 max-w-md text-xs sm:text-sm leading-relaxed"> From a single concept to full-scale production, Chroma3D delivers precision, consistency, and speed — because every layer matters. </p> <div className="mt-4 sm:mt-5"> <a href="#contact" className="inline-block rounded-xl border border-white/15 px-3 sm:px-4 py-1.5 sm:py-2 text-white/90 hover:text-orange-500 hover:bg-white/15 transition text-xs sm:text-sm" > Get a Quote </a> </div> </div> </motion.div> </section> ); }
